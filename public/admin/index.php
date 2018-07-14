@@ -24,6 +24,12 @@ else if (isset($_GET['add_product'])){
 else if (isset($_GET['edit_product'])){
     include(TEMPLATE_BACK . DS . "edit_product.php");
 }
+else if (isset($_GET['edit_user'])){
+    include(TEMPLATE_BACK . DS . "edit_user.php");
+}
+else if (isset($_GET['add_user'])){
+    include(TEMPLATE_BACK . DS . "add_user.php");
+}
 else if (isset($_GET['categories'])){
     include(TEMPLATE_BACK . DS . "categories.php");
 }

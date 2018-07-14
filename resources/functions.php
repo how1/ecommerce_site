@@ -226,6 +226,7 @@ function get_products_in_admin(){
             $product_image = "../../resources/images/" . $row['product_image'];
         }
         $product_category = show_product_category($row['product_category_id']);
+        $product_brand = show_product_brand($row['product_category_id']);
         $product = <<<DELIMITER
         
           <tr>
@@ -233,6 +234,7 @@ function get_products_in_admin(){
             <td>{$row['product_title']}<br><a href="index.php?edit_product&id={$row['product_id']}">
             <img style="height:100px" src="{$product_image}"></a></td>
             <td>{$product_category}</td>
+            <td>{$product_brand}</td>
             <td>{$row['product_price']}</td>
             <td>{$row['product_quantity']}</td>
             <td><a class="btn btn-danger" href="../../resources/templates/back/delete_product.php?id={$row['product_id']}"><span class="glyphicon glyphicon-remove"></span></a></td>
@@ -257,41 +259,73 @@ function add_product(){
         $p_image = escape($_FILES['file']['name']);
         $image_temp_location = $_FILES['file']['tmp_name'];
         $p_tags = escape($_POST['product_tags']);
-        $p_brand = escape($_POST['product_brand']);
+        $p_brand = escape($_POST['product_brand_id']);
 
         move_uploaded_file($image_temp_location  , UPLOAD_DIRECTORY . DS . $p_image);
 
 
-    $query = query("INSERT INTO products (product_title, product_price, product_category_id, product_description, short_desc, product_quantity, product_image, product_tags, product_brand) VALUES ('{$p_title}','$p_price','$p_cat_id','{$p_desc}','{$p_short_desc}','{$p_quantity}','{$p_image}','{$p_tags}','{$p_brand}')");
-    confirm($query);
-     set_message("New product \"{$p_title}\" added");
-     redirect("index.php?products");
+        $query = query("INSERT INTO products 
+            (product_title, 
+            product_price, 
+            product_category_id, 
+            product_description, 
+            short_desc, 
+            product_quantity, 
+            product_image, 
+            product_tags, 
+            product_brand_id) 
+            VALUES (
+            '{$p_title}',
+            '$p_price',
+            '$p_cat_id',
+            '{$p_desc}',
+            '{$p_short_desc}',
+            '{$p_quantity}',
+            '{$p_image}',
+            '{$p_tags}',
+            '{$p_brand}')");
+        confirm($query);
+        set_message("New product \"{$p_title}\" added");
+        redirect("index.php?products");
     }
 
 }
 
 // add products in admin
-function edit_product(){
+function edit_product($product_image){
 
-    if (isset($_POST['publish'])){
+    if (isset($_POST['publish']) && isset($_GET['id'])){
         $p_title = escape($_POST['product_title']);
         $p_cat_id = escape($_POST['product_category_id']);
         $p_desc = escape($_POST['product_description']);
         $p_short_desc = escape($_POST['product_short_desc']);
         $p_quantity = escape($_POST['product_quantity']);
         $p_price = escape($_POST['product_price']);
-        $p_image = escape($_FILES['file']['name']);
+        if ($_FILES['file']['name'] == ""){
+            $p_image = $product_image;
+        } else { 
+            $p_image = $_FILES['file']['name'];
+        }
         $image_temp_location = $_FILES['file']['tmp_name'];
         $p_tags = escape($_POST['product_tags']);
-        $p_brand = escape($_POST['product_brand']);
-
+        $p_brand = escape($_POST['product_brand_id']);
+       
         move_uploaded_file($image_temp_location  , UPLOAD_DIRECTORY . DS . $p_image);
-
-
-    $query = query("INSERT INTO products (product_title, product_price, product_category_id, product_description, short_desc, product_quantity, product_image, product_tags, product_brand) VALUES ('{$p_title}','$p_price','$p_cat_id','{$p_desc}','{$p_short_desc}','{$p_quantity}','{$p_image}','{$p_tags}','{$p_brand}')");
-    confirm($query);
-     set_message("New product \"{$p_title}\" added");
-     redirect("index.php?products");
+        $query = query("
+            UPDATE products SET 
+            product_title ='{$p_title}', 
+            product_price = '{$p_price}', 
+            product_category_id = '{$p_cat_id}', 
+            product_description = '{$p_desc}', 
+            short_desc = '{$p_short_desc}', 
+            product_quantity = '{$p_quantity}', 
+            product_image = '{$p_image}', 
+            product_tags = '{$p_tags}', 
+            product_brand_id = '{$p_brand}' 
+            WHERE product_id = {$_GET['id']}");
+        confirm($query);
+        set_message("Product \"{$p_title}\" edited");
+        redirect("index.php?products");
     }
 
 }
@@ -301,6 +335,12 @@ function show_product_category($cat_id){
     confirm($query);
     $row = fetch_array($query);
     return $row['cat_title'];
+}
+function show_product_brand($id){
+    $query = query("SELECT brand_title FROM brands WHERE brand_id=" . $id);
+    confirm($query);
+    $row = fetch_array($query);
+    return $row['brand_title'];
 }
 
 function show_admin_categories(){
@@ -331,8 +371,62 @@ function add_category(){
     }
 }
 
+function display_users(){
+    $query = query("SELECT * FROM users");
+    confirm($query);
+    while($row = fetch_array($query)){
+        $username = escape($row['username']);
+        $email = escape($row['user_email']);
+        $password = escape($row['password']);
+        $id = escape($row['user_id']);
+        $users = <<<DELIMITER
+         <tr>
+            <td>{$id}</td>
+            <td><img class="admin-user-thumbnail user_image" src="http://placehold.it/62x62" alt=""></td>
+            <td>{$username}
+            </td>
+            <td>
+                <a href="../../resources/templates/back/delete_user.php?id={$id}">Delete</a>
+            </td>
+            <td>
+                <a href="index.php?edit_user&id={$id}">Edit</a>
+            </td>
+        </tr>
 
+DELIMITER;
+        echo $users;
+    }
+}
 
+function add_user(){
+    if (isset($_POST['submit'])){
+        $username = escape($_POST['username']);
+        $password = escape($_POST['password']);
+        $email = escape($_POST['user_email']);
+        $user_role = escape($_POST['user_role']);
+        $query = query("INSERT INTO users (username, password, user_email, user_role) VALUES ('{$username}','{$password}','{$email}','{$user_role}')");
+        confirm($query);
+        set_message("User \"{$username}\" added");
+        redirect("index.php?users");
+    }
+}
 
+function edit_user(){
+    if (isset($_POST['submit'])){
+        $username = escape($_POST['username']);
+        $password = escape($_POST['password']);
+        $email = escape($_POST['user_email']);
+        $user_role = escape($_POST['user_role']);
+        $query = query("UPDATE users SET 
+            username = '{$username}',
+            password = '{$password}',
+            user_email = '{$email}', 
+            user_role = '{$user_role}' 
+            WHERE user_id=" . $_GET['id']);
+        confirm($query);
+        set_message("User \"{$username}\" changes made");
+        redirect("index.php?users");
+    }
+}
 
 ?>
