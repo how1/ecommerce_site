@@ -227,6 +227,11 @@ function get_products_in_admin(){
         }
         $product_category = show_product_category($row['product_category_id']);
         $product_brand = show_product_brand($row['product_category_id']);
+        if ($row['product_featured'] == 'featured'){
+            $featured = "<p><span class='glyphicon glyphicon-ok'></span></p>";
+        } else {
+            $featured = "";
+        }
         $product = <<<DELIMITER
         
           <tr>
@@ -237,6 +242,7 @@ function get_products_in_admin(){
             <td>{$product_brand}</td>
             <td>{$row['product_price']}</td>
             <td>{$row['product_quantity']}</td>
+            <td>{$featured}</td>
             <td><a onClick="javascript: return confirm('Are you sure you want to delete product: {$row['product_title']}?');" class="btn btn-danger" href="../../resources/templates/back/delete_product.php?id={$row['product_id']}"><span class="glyphicon glyphicon-remove"></span></a></td>
         </tr>
         
@@ -245,7 +251,6 @@ DELIMITER;
         echo $product;
     }
 }
-
 
 // add products in admin
 function add_product(){
@@ -256,6 +261,10 @@ function add_product(){
         $p_short_desc = escape($_POST['product_short_desc']);
         $p_quantity = escape($_POST['product_quantity']);
         $p_price = escape($_POST['product_price']);
+        $p_featured = escape($_POST['product_featured']);
+        if (empty($_POST['product_featured'])){
+            $p_featured = 'notfeatured';
+        }
         $p_image = escape($_FILES['file']['name']);
         $image_temp_location = $_FILES['file']['tmp_name'];
         $p_tags = escape($_POST['product_tags']);
@@ -273,7 +282,8 @@ function add_product(){
             product_quantity, 
             product_image, 
             product_tags, 
-            product_brand_id) 
+            product_brand_id
+            product_featured) 
             VALUES (
             '{$p_title}',
             '$p_price',
@@ -283,7 +293,8 @@ function add_product(){
             '{$p_quantity}',
             '{$p_image}',
             '{$p_tags}',
-            '{$p_brand}')");
+            '{$p_brand}',
+            '{$p_featured}')");
         confirm($query);
         set_message("New product \"{$p_title}\" added");
         redirect("index.php?products");
@@ -301,6 +312,10 @@ function edit_product($product_image){
         $p_short_desc = escape($_POST['product_short_desc']);
         $p_quantity = escape($_POST['product_quantity']);
         $p_price = escape($_POST['product_price']);
+        $p_featured = escape($_POST['product_featured']);
+        if (empty($_POST['product_featured'])){
+            $p_featured = 'notfeatured';
+        }
         if ($_FILES['file']['name'] == ""){
             $p_image = $product_image;
         } else { 
@@ -321,7 +336,8 @@ function edit_product($product_image){
             product_quantity = '{$p_quantity}', 
             product_image = '{$p_image}', 
             product_tags = '{$p_tags}', 
-            product_brand_id = '{$p_brand}' 
+            product_brand_id = '{$p_brand}',
+            product_featured = '{$p_featured}' 
             WHERE product_id = {$_GET['id']}");
         confirm($query);
         set_message("Product \"{$p_title}\" edited");
@@ -452,6 +468,47 @@ DELIMITER;
     }
 }
 
+function show_featured_products(){
+    $query = query("SELECT * FROM products WHERE product_featured='featured'");
+    confirm($query);
+    $num_slides = mysqli_num_rows($query);
+    for($x = 0; $x < $num_slides; $x++){
+        if ($x == 0){
+        echo "<li data-target='#carousel-example-generic' data-slide-to='0' class='active'></li>";
+        }
+        else {
+        echo "<li data-target='#carousel-example-generic' data-slide-to='{$x}'></li>";
+        }
+    }
+    echo "</ol><div class='carousel-inner'>";
+    $count = 0;
+    while($row = fetch_array($query)){
+        if ($count > 0){
+            $class = "item";
+        } else {
+            $class = "item active";
+        }
+        $product_image = $row['product_image'];
+        if ($product_image == ""){
+            $product_image = "http://placehold.it/900x300";
+        } else {
+            $product_image = "../resources/images/{$product_image}";
+        }
+        $product_id = $row['product_id'];
+        $featured = <<<DELIMITER
+        <div style="width:900px; height:300px" class="{$class}">
+            <a href="item.php?id={$product_id}"><img style='width:100%' class="slide-image" src="{$product_image}" alt="">
+                <div class="carousel-caption d-none d-md-block">
+                    <h4>Featured Item</h4>
+                    <p>Deals on these products</p>
+                </div>
+            </a>
 
+        </div>
+DELIMITER;
+        echo $featured;
+        $count++;
+    }
 
+}
 ?>

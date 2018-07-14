@@ -22,6 +22,7 @@
            <th>Brand</th>
            <th>Price</th>
            <th>Quantity</th>
+           <th>Is Featured</th>
       </tr>
     </thead>
     <tbody>
@@ -32,20 +33,6 @@
 
   </tbody>
 </table>
-
-
-
-
-
-
-
-
-
-
-
-                
-                 
-
 
              </div>
 

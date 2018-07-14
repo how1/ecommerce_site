@@ -22,6 +22,7 @@
 <!--row starts here-->
                 <div class="row">
 
+
                    <?php get_products();?>
                     
                 </div>

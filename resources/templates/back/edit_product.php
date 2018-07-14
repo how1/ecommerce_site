@@ -77,14 +77,15 @@ if (isset($_GET['id'])){
         <label for="product-price">Product Price</label>
         <input type="number" step="0.01" name="product_price" class="form-control" size="60" value="{$product_price}">
       </div>
-    </div>  
-
-
-    <div class="form-group row">
 
       <div class="col-xs-3">
         <label for="product-price">Product Quantity</label>
         <input type="number" name="product_quantity" class="form-control" size="60" value="{$product_quantity}">
+      </div>
+      
+      <div class="col-xs-3">
+        <label for="product-featured">Is Featured</label>
+        <input type="checkbox" name="product_featured" class="form-control" value="featured">
       </div>
     </div>
 
