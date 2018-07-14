@@ -28,7 +28,7 @@ function query($query){
 function confirm($query){
     global $connection;
     if (!$query){
-        echo mysqli_error($connection);
+        echo "Query failed: " . mysqli_error($connection);
     }
 }
 
@@ -237,7 +237,7 @@ function get_products_in_admin(){
             <td>{$product_brand}</td>
             <td>{$row['product_price']}</td>
             <td>{$row['product_quantity']}</td>
-            <td><a class="btn btn-danger" href="../../resources/templates/back/delete_product.php?id={$row['product_id']}"><span class="glyphicon glyphicon-remove"></span></a></td>
+            <td><a onClick="javascript: return confirm('Are you sure you want to delete product: {$row['product_title']}?');" class="btn btn-danger" href="../../resources/templates/back/delete_product.php?id={$row['product_id']}"><span class="glyphicon glyphicon-remove"></span></a></td>
         </tr>
         
 DELIMITER;
@@ -291,7 +291,7 @@ function add_product(){
 
 }
 
-// add products in admin
+// edit products in admin
 function edit_product($product_image){
 
     if (isset($_POST['publish']) && isset($_GET['id'])){
@@ -354,7 +354,7 @@ function show_admin_categories(){
         <tr>
             <td>{$cat_id}</td>
             <td>{$cat_title}</td>
-            <td><a class="btn btn-danger" href="../../resources/templates/back/delete_category.php?id={$cat_id}"><span class="glyphicon glyphicon-remove"></span></a></td>
+            <td><a onClick="javascript: return confirm('Are you sure you want to delete?');" class="btn btn-danger" href="../../resources/templates/back/delete_category.php?id={$cat_id}"><span class="glyphicon glyphicon-remove"></span></a></td>
         </tr>
 
 DELIMITER;
@@ -368,6 +368,8 @@ function add_category(){
         $cat_title = escape($_POST['cat_title']);
 
         $query = query("INSERT INTO categories (cat_title) VALUES ('{$cat_title}')");
+        set_message("Category created");
+        redirect("index.php?categories");
     }
 }
 
@@ -378,18 +380,19 @@ function display_users(){
         $username = escape($row['username']);
         $email = escape($row['user_email']);
         $password = escape($row['password']);
+        $user_role = escape($row['user_role']);
         $id = escape($row['user_id']);
         $users = <<<DELIMITER
          <tr>
             <td>{$id}</td>
             <td><img class="admin-user-thumbnail user_image" src="http://placehold.it/62x62" alt=""></td>
-            <td>{$username}
+            <td>{$username}</td>
+            <td>{$user_role}</td>
+            <td>
+                <a onClick="javascript: return confirm('Are you sure you want to delete user: {$username}?');" class="btn btn-danger" href="../../resources/templates/back/delete_user.php?id={$id}"><span class="glyphicon glyphicon-remove"></span></a>
             </td>
             <td>
-                <a href="../../resources/templates/back/delete_user.php?id={$id}">Delete</a>
-            </td>
-            <td>
-                <a href="index.php?edit_user&id={$id}">Edit</a>
+                <a class="btn btn-primary" href="index.php?edit_user&id={$id}"><span class="glyphicon glyphicon-edit"></span></a>
             </td>
         </tr>
 
@@ -428,5 +431,27 @@ function edit_user(){
         redirect("index.php?users");
     }
 }
+
+function display_reports(){ 
+    $query = query("SELECT * FROM reports");
+    confirm($query);
+    while($row = fetch_array($query)){
+        $report = <<<DELIMITER
+        <tr>
+            <td>{$row['report_id']}</td>
+            <td>{$row['product_id']}</td>
+            <td>{$row['product_title']}</td>
+            <td>&#36;{$row['product_price']}</td>
+            <td>{$row['product_quantity']}</td>
+            <td>{$row['order_id']}</td>
+            <td><a class="btn btn-danger" href="../../resources/templates/back/delete_report.php?id={$row['report_id']}"><span class="glyphicon glyphicon-remove"></span></a></td>
+        </tr>
+
+DELIMITER;
+        echo $report;
+    }
+}
+
+
 
 ?>

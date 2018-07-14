@@ -6,8 +6,12 @@
 <div class="row">
 <h1 class="page-header">
    All Orders
-
 </h1>
+<ol class="breadcrumb">
+  <li class="active">
+      <i class="fa fa-bar-chart-o"></i> Orders
+  </li>
+</ol>
 <h3 class="text-center bg-success"><?php display_message(); ?></h3>
 </div>
 

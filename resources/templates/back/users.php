@@ -26,13 +26,13 @@
                                         <th>Id</th>
                                         <th>Photo</th>
                                         <th>Username</th>
+                                        <th>User Role</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
 
                                 <?php 
-                                // display Users
                                 display_users();
                                 ?>
 
