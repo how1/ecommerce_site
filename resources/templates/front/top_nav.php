@@ -24,7 +24,7 @@
                         <a href="admin">Admin</a>
                     </li>
                      <li>
-                        <a href="checkout.php">Checkout</a>
+                        <a href="view_cart.php">Checkout</a>
                     </li>
                     <li>
                         <a href="contact.php">Contact</a>
