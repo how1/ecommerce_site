@@ -2,6 +2,7 @@
 <?php include(TEMPLATE_FRONT . DS . "header.php");?>
 <?php include(TEMPLATE_FRONT . DS . "top_nav.php");?>
 
+
     <!-- Page Content -->
     <div class="container">
 
@@ -20,6 +21,7 @@
                     </div>
                 </div>
 <!--row starts here-->
+
                 <div class="row">
 
 
@@ -33,5 +35,6 @@
 
     </div>
     <!-- /.container -->
+
 
    <?php include(TEMPLATE_FRONT . DS . "footer.php");?>

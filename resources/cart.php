@@ -11,10 +11,10 @@ if (isset($_GET['add'])){
     while($row = fetch_array($query)){
         if ($row['product_quantity'] != $_SESSION['product_' . $_GET['add']]){
             $_SESSION['product_' . $_GET['add']]+=1;
-            redirect("../public/checkout.php");
+            redirect("../public/view_cart.php");
         } else {
             set_message("We only have " . $row['product_quantity'] . " available");
-            redirect("../public/checkout.php");
+            redirect("../public/view_cart.php");
         }
     }
     
@@ -24,9 +24,9 @@ if (isset($_GET['remove'])){
     $_SESSION['product_' . $_GET['remove']]--;
     if ($_SESSION['product_' .  $_GET['remove']] < 1){
         set_message("product removed");
-        redirect("../public/checkout.php");
+        redirect("../public/view_cart.php");
     } else {
-        redirect("../public/checkout.php");
+        redirect("../public/view_cart.php");
     }
 }
 
@@ -35,7 +35,7 @@ if (isset($_GET['delete'])){
     set_message("product deleted");
     $_SESSION['item_total'] = 0;
     unset($_SESSION['num_items']);
-    redirect("../public/checkout.php");
+    redirect("../public/view_cart.php");
 }
 
 function cart(){
@@ -127,7 +127,7 @@ function process_transaction(){
         $status = $_GET['st'];
         if($status != "Completed"){
             set_message("Transaction not completed");
-            redirect("checkout.php");
+            redirect("view_cart.php");
         }
         echo "<h1 class='text-center''>Thank you for shopping with us.</h1>";
         $total = 0;

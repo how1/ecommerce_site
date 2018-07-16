@@ -162,14 +162,21 @@ function login_user(){
         $password = escape($_POST['password']);
         $query = query("SELECT * FROM users WHERE username = '{$username}' AND password = '{$password}' ");
         confirm($query);
+        $row = fetch_array($query);
         if (mysqli_num_rows($query) == 0){
             set_message('Your Username and/or Password is wrong');
             redirect('login.php');
-        } else {
+        } else if ($row['user_role'] == 'Admin') {
             $_SESSION['username'] = $username;
-            set_message('
-            Welcome to Admin');
+            $_SESSION['user_role'] = $row['user_role'];
+            set_message('Welcome to Admin');
             redirect('admin');
+        }
+        else {
+            $_SESSION['username'] = $username;
+            $_SESSION['user_role'] = $row['user_role'];
+            set_message('Welcome {$username}');
+            redirect('public');
         }
     }
     
