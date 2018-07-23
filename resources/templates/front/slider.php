@@ -1,34 +1,18 @@
-<script language="JavaScript" type="text/javascript" src="js/jquery.js"></script>
-<script language="JavaScript" type="text/javascript" src="js/bootstrap.min.js"></script>
 
-<script language="JavaScript" type="text/javascript">
-    $(document).ready(function(){
-        $('.carousel').carousel({interval:3000});
-    });    
-</script>
+            
+<div id="demo" class="carousel slide" data-ride="carousel">
 
-           <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
+  <!-- Indicators -->
+  <ul class="carousel-indicators">
             <?php show_featured_products(); ?>
-            <!-- <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-            </ol>
-        <div class="carousel-inner"> -->
-            <!-- <div class="item active">
-                <img class="slide-image" src="http://placehold.it/800x300" alt="">
-            </div>
-            <div class="item">
-                <img class="slide-image" src="http://placehold.it/800x300" alt="">
-            </div>
-            <div class="item">
-                <img class="slide-image" src="http://placehold.it/800x300" alt="">
-            </div> -->
-        </div>
-        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-            <span class="glyphicon glyphicon-chevron-left"></span>
-        </a>
-        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-            <span class="glyphicon glyphicon-chevron-right"></span>
-        </a>
+  
+  <!-- Left and right controls -->
+  <a class="carousel-control-prev" href="#demo" data-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </a>
+  <a class="carousel-control-next" href="#demo" data-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </a>
+</div>
+          
     </div>

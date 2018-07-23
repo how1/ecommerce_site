@@ -22,7 +22,7 @@
         <!-- /.row -->
 
         <!-- Page Features -->
-        <div class="row text-center">
+        <div class="row">
             <?php
                 get_shop_page_products();
             ?>

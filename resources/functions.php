@@ -57,21 +57,18 @@ function get_products(){
             $image_path = "../resources/images/{$row['product_image']}";
         }
         $product = <<<DELIMITER
-        
-        <div class="col-sm-4 col-lg-4 col-md-4">
-            <div class="thumbnail">
-                <a href="item.php?id={$row['product_id']}"><img style="height:150px" src="$image_path" alt="product image"></a>
-                <div class="caption">
-                    <h4 class="pull-right">&#36;{$row['product_price']}</h4>
-                    <h4><a href="item.php?id={$row['product_id']}">{$row['product_title']}</a>
-                    </h4>
-                    <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
-                <a class="btn btn-primary" target="_blank" href="../resources/cart.php?add={$row['product_id']}">Add to Cart</a>
-                </div>
-
+        <div class="col-xs-4 col-md-4 col-sm-4" style="margin-bottom: 15px">
+            <div class="card" style="height:375px">
+                    <a href="item.php?id={$row['product_id']}"><img class="card-img-top" style="height: 10rem;" src="$image_path" alt="product image"></a>
+                    <div class="caption" style="margin:10px">
+                        <h4 class="float-right">&#36;{$row['product_price']}</h4>
+                        <h4><a style="text-decoration:none; color:black" href="item.php?id={$row['product_id']}">{$row['product_title']}</a>
+                        </h4>
+                        <p>See more snippets like this online store item at <a target="_blank" href="http://www.bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
+                    <a class="btn btn-primary" target="_blank" href="../resources/cart.php?add={$row['product_id']}">Add to Cart</a>
+                    </div>
             </div>
         </div>
-        
 DELIMITER;
         
         echo $product;
@@ -86,7 +83,7 @@ function get_categories(){
         $cat_id = $row['cat_id'];
         $cat_title = $row['cat_title'];
         $category = <<<DELIMITER
-<a href='category.php?id=$cat_id' class='list-group-item'>$cat_title</a>
+<a href='category.php?id=$cat_id' class='list-group-item-action'>$cat_title</a>
 DELIMITER;
     echo $category;
     }
@@ -106,18 +103,18 @@ function get_cat_page_products(){
                 $image_path = "../resources/images/{$row['product_image']}";
             }
             $cat_product = <<<DELIMITER
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img style="height:150px" src="{$image_path}" alt="">
-                    <div class="caption">
-                        <h3>{$row['product_title']}</h3>
-                        <p>{$row['short_desc']}</p>
-                        <p>
-                            <a href="#" class="btn btn-primary">Add to Cart</a> <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
+            <div class="col-xs-4 col-md-4 col-sm-4" style="margin-bottom: 15px">
+            <div class="card" style="height:375px">
+                    <a href="item.php?id={$row['product_id']}"><img class="card-img-top" style="height: 10rem;" src="$image_path" alt="product image"></a>
+                    <div class="caption" style="margin:10px">
+                        <h4 class="float-right">&#36;{$row['product_price']}</h4>
+                        <h4><a style="text-decoration:none; color:black" href="item.php?id={$row['product_id']}">{$row['product_title']}</a>
+                        </h4>
+                     <a href="#" class="btn btn-primary">More Info</a> <a href="item.php?id={$row['product_id']}" class="btn btn-default"></a>
+                     </div>
             </div>
+        </div>
+        
 DELIMITER;
             echo $cat_product;
         }
@@ -138,18 +135,17 @@ function get_shop_page_products(){
                 $image_path = "../resources/images/{$row['product_image']}";
             }
             $cat_product = <<<DELIMITER
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail"><a href="item.php?id={$row['product_id']}">
-                    <img style="height:150px" src="{$image_path}" alt=""></a>
-                    <div class="caption">
-                        <h3>{$row['product_title']}</h3>
-                        <p>{$row['short_desc']}</p>
-                        <p>
-                            <a href="../resources/cart.php?add={$row['product_id']}" class="btn btn-primary">Add to Cart</a> <a href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
+            <div class="col-xs-4 col-md-4 col-sm-4" style="margin-bottom: 15px">
+            <div class="card" style="height:375px">
+                    <a href="item.php?id={$row['product_id']}"><img class="card-img-top" style="height: 10rem;" src="$image_path" alt="product image"></a>
+                    <div class="caption" style="margin:10px">
+                        <h4 class="float-right">&#36;{$row['product_price']}</h4>
+                        <h4><a style="text-decoration:none; color:black" href="item.php?id={$row['product_id']}">{$row['product_title']}</a>
+                        </h4>
+                     <a class="btn btn-primary" href="item.php?id={$row['product_id']}" class="btn btn-default">More Info</a>
+                     </div>
             </div>
+        </div>
 DELIMITER;
             echo $cat_product;
         }
@@ -164,19 +160,31 @@ function login_user(){
         confirm($query);
         $row = fetch_array($query);
         if (mysqli_num_rows($query) == 0){
-            set_message('Your Username and/or Password is wrong');
-            redirect('login.php');
-        } else if ($row['user_role'] == 'Admin') {
-            $_SESSION['username'] = $username;
-            $_SESSION['user_role'] = $row['user_role'];
-            set_message('Welcome to Admin');
-            redirect('admin');
-        }
-        else {
-            $_SESSION['username'] = $username;
-            $_SESSION['user_role'] = $row['user_role'];
-            set_message('Welcome {$username}');
-            redirect('public');
+            set_message("<h4 class='text-center bg-warning'>Your Username and/or Password is wrong</h4>");
+            // redirect("index.php");
+        } else {
+            if (isset($_POST['remember_me'])){
+                $expiration = time() + (60*60*24*7);
+                setcookie("remember_me",'remember',$expiration);
+                $expiration = time() + (60*60*24*7);
+                setcookie("auto-login",'login',$expiration);
+                $expiration = time() + (60*60*24*7);
+                setcookie("username",$username,$expiration);
+                $expiration = time() + (60*60*24*7);
+                setcookie("password",$password,$expiration);
+            }
+            if ($row['user_role'] == 'Admin') {
+                $_SESSION['username'] = $username;
+                $_SESSION['user_role'] = $row['user_role'];
+                set_message('Welcome to Admin');
+                redirect('admin');
+            }
+            else {
+                $_SESSION['username'] = $username;
+                $_SESSION['user_role'] = $row['user_role'];
+                set_message("<h4 class='text-center bg-success'>Welcome $username</h4>");
+                // redirect($_SERVER['REQUEST_URI']);
+            }
         }
     }
     
@@ -386,6 +394,15 @@ DELIMITER;
 }
 
 
+function get_cat_name($cat_id){
+    $query = query("SELECT cat_title FROM categories WHERE cat_id={$cat_id}");
+    confirm($query);
+    $row = fetch_array($query);
+    $cat_title = $row['cat_title'];
+    return $cat_title;
+}
+
+
 function add_category(){
     if (isset($_POST['submit'])){
         $cat_title = escape($_POST['cat_title']);
@@ -481,19 +498,19 @@ function show_featured_products(){
     $num_slides = mysqli_num_rows($query);
     for($x = 0; $x < $num_slides; $x++){
         if ($x == 0){
-        echo "<li data-target='#carousel-example-generic' data-slide-to='0' class='active'></li>";
+        echo "<li data-target='#demo' data-slide-to='0' class='active'></li>";
         }
         else {
-        echo "<li data-target='#carousel-example-generic' data-slide-to='{$x}'></li>";
+        echo "<li data-target='#demo' data-slide-to='{$x}'></li>";
         }
     }
-    echo "</ol><div class='carousel-inner'>";
+echo "</ul> <div class='carousel-inner'>";
     $count = 0;
     while($row = fetch_array($query)){
         if ($count > 0){
-            $class = "item";
+            $class = "carousel-item";
         } else {
-            $class = "item active";
+            $class = "carousel-item active";
         }
         $product_image = $row['product_image'];
         if ($product_image == ""){
@@ -503,8 +520,8 @@ function show_featured_products(){
         }
         $product_id = $row['product_id'];
         $featured = <<<DELIMITER
-        <div style="width:900px; height:300px" class="{$class}">
-            <a href="item.php?id={$product_id}"><img style='width:100%' class="slide-image" src="{$product_image}" alt="">
+        <div style="width:100%; height:350px"; class="{$class}">
+            <a href="item.php?id={$product_id}"><img style="width:100%; height:100%" src="{$product_image}" alt="">
                 <div class="carousel-caption d-none d-md-block">
                     <h4>Featured Item</h4>
                     <p>Deals on these products</p>
@@ -518,4 +535,5 @@ DELIMITER;
     }
 
 }
+
 ?>

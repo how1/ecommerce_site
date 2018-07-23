@@ -1,90 +1,110 @@
  <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-
-        <div class="container">
+    <nav class="navbar navbar-dark navbar-expand-md fixed-top bg-dark" role="navigation">
+      <div class="container">
+            <div>
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.php">Home</a>
+            <a class="navbar-brand" href="index.php">Home</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+            </button>
             </div>
+
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="shop.php">Shop</a>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="shop.php">Shop</a>
                     </li>
-                    <li>
-                        <a href="login.php">Login</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Login</a>
                     </li>
-                    <li>
-                        <a href="admin">Admin</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin">Admin</a>
                     </li>
-                     <li>
-                        <a href="view_cart.php">Cart</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="view_cart.php">Cart</a>
                     </li>
                 </ul>
                 <!-- Top Menu Items -->
-            <ul class="nav navbar-right navbar-nav" >
+            <ul class="navbar-nav dropdown" >
               <?php 
 
               if (isset($_SESSION['username'])){
-                  $user = <<<DELIMITER
-
-
-              <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                       
-                       <!--  <li class="divider"></li> -->
-                        <li>
-                            <a href="admin/logout.php"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
-                        </li>
-                    </ul>
-                </li>
-DELIMITER;
-                echo $user;
-              } else {
-              
-              $form = <<<DELIMITER
-
-              <li class="dropdown show">
-              
-  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Login
+                 echo"
+<div class='dropdown show'>
+  <a class='btn btn-primary dropdown-toggle' href='#'' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+    {$_SESSION['username']}
   </a>
 
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-  <div style="margin: 20 20 20 20; padding:10 10 10 10>
-  <form class="px-4 py-3">
-    <div class="form-group">
-      <label for="exampleDropdownFormEmail1">Email address</label>
-      <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
+  <div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>
+    <a class='dropdown-item' href='admin/logout.php'>Logout</a>
+    
+  </div>
+</div>";
+              
+                          
+              } else {
+                if (isset($_COOKIE['remember_me'])){
+                  if ($_COOKIE['auto-login'] == 'login'){
+                    $_POST['username'] = $_COOKIE['username'];
+                    $_POST['password'] = $_COOKIE['password'];
+                  }
+                }
+              login_user();
+
+             echo "
+  <button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown'>
+      Login
+    </button>
+<div class='dropdown-menu dropdown-menu-right'>
+  <form class='px-4 py-3' action='{$_SERVER['REQUEST_URI']}' method='post' enctype='multipart/form-data'>
+
+   
+    <div class='form-group'>
+      <label for='exampleDropdownFormEmail1'>Username</label>";
+
+if (isset($_COOKIE['remember_me'])){
+        $username = $_COOKIE['username'];
+        $password = $_COOKIE['password'];
+              
+    echo "<input type='text' required class='form-control' name='username' id='DropdownFormEmail' value='{$username}'>
+            </div>
+            <div class='form-group'>
+              <label for='exampleDropdownFormPassword1'>Password</label>
+              <input type='password' required class='form-control' name='password' id='DropdownFormPassword' value='{$password}'>
+              </div>
+          <div class='form-check'>
+          <input type='checkbox' checked class='form-check-input' name='remember_me' value='remember' id='remember_me'>";
+} else { 
+      unset($_COOKIE['username']);
+      unset($_COOKIE['password']);
+      unset($_COOKIE['auto-login']);
+      echo "<input type='text' required class='form-control' name='username' id='DropdownFormEmail' placeholder='Username'>
     </div>
-    <div class="form-group">
-      <label for="exampleDropdownFormPassword1">Password</label>
-      <input type="password" class="form-control" id="exampleDropdownFormPassword1" placeholder="Password">
+    <div class='form-group'>
+      <label for='exampleDropdownFormPassword1'>Password</label>
+      <input type='password' required class='form-control' name='password' id='DropdownFormPassword' placeholder='Password'>
+       <div class='form-check'>
+          <input type='checkbox' class='form-check-input' name='remember_me' value='remember' id='remember_me'>";
+
+    }
+      $form = <<<DELIMITER
+    
     </div>
     <div class="form-check">
-      <input type="checkbox" class="form-check-input" id="dropdownCheck">
+      <input type="checkbox" class="form-check-input" name="remember_me" value="remember" id="remember_me">
       <label class="form-check-label" for="dropdownCheck">
         Remember me
       </label>
     </div>
-    <button type="submit" class="btn btn-primary">Sign in</button>
+    <button type="submit" name="submit" class="btn btn-primary">Sign in</button>
   </form>
   <div class="dropdown-divider"></div>
   <a class="dropdown-item" href="#">New around here? Sign up</a>
   <a class="dropdown-item" href="#">Forgot password?</a>
 </div>
-
-  </div>
-  </div>
-</li>
+</div>
+    </ul>
 
 DELIMITER;
 echo $form;
@@ -92,8 +112,7 @@ echo $form;
 ?>
             </ul>
             <!-- /.navbar-collapse-->
-        </div>
+          </div> 
         <!-- /.container -->
     </nav>
 
-    

@@ -3,22 +3,23 @@
 <?php include(TEMPLATE_FRONT . DS . "top_nav.php");?>
 
 
-<!-- Page Content -->
-    <div class="container">
 
+<!-- Page Content -->
+    <div class="container" style="margin-top: 70px">
+<a id="message" href="" style="text-decoration: none; color: white"><h4 class="text-center bg-danger"><?php 
+          
+            display_message(); ?></h4></a>
 
 <!-- /.row --> 
 
 <div class="row">
-        <h4 class="text-center bg-danger"><?php 
-          
-            display_message(); ?></h4>
+        
       <h1>Checkout</h1>
 
 <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
   <input type="hidden" name="cmd" value="_cart">
   <input type="hidden" name="business" value="seller@henrywowen.com">
-    <table class="table table-striped">
+    <table class="table table-striped" style="margin: 10px">
         <thead>
           <tr>
            <th>Product</th>
@@ -44,7 +45,7 @@
 <div class="col-xs-4 pull-right ">
 <h2>Cart Totals</h2>
 
-<table class="table table-bordered" cellspacing="0">
+<table class="table table-bordered" style="margin:10px" cellspacing="0">
 
 <tr class="cart-subtotal">
 <th>Items:</th>

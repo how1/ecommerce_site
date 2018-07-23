@@ -32,7 +32,7 @@ if (isset($_GET['remove'])){
 
 if (isset($_GET['delete'])){
     $_SESSION['product_' . $_GET['delete']] = '0';
-    set_message("product deleted");
+    set_message("Product Deleted");
     $_SESSION['item_total'] = 0;
     unset($_SESSION['num_items']);
     redirect("../public/view_cart.php");
@@ -66,9 +66,10 @@ function cart(){
                 <td>&#36;{$row['product_price']}</td>
                 <td>{$value}</td>
                 <td>$subtotal</td>
-                <td><a class="btn btn-warning" href="../resources/cart.php?remove={$row['product_id']}"><span class="glyphicon glyphicon-minus"></span></a>
-                <a class="btn btn-success" href="../resources/cart.php?add={$row['product_id']}"><span class="glyphicon glyphicon-plus"></span></a>
-                <a class="btn btn-danger" href="../resources/cart.php?delete={$row['product_id']}"><span class="glyphicon glyphicon-remove"></span></a>
+                <td>
+                <a class="btn btn-success" href="../resources/cart.php?add={$row['product_id']}"><span class="glyphicon glyphicon-plus">+</span></a>
+                <a class="btn btn-warning" href="../resources/cart.php?remove={$row['product_id']}"><span class="glyphicon glyphicon-minus">-</span></a>
+                <a class="btn btn-danger" href="../resources/cart.php?delete={$row['product_id']}"><span class="glyphicon glyphicon-remove">x</span></a>
                 </td>
                 </tr>
 

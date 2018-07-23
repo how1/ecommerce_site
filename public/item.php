@@ -7,7 +7,7 @@
 
        <!-- Side Navigation -->
 
-           <?php include(TEMPLATE_FRONT . DS . "side_nav.php");?>
+           <?php //include(TEMPLATE_FRONT . DS . "side_nav.php");?>
 <?php 
     
 $query = query(" SELECT * FROM products WHERE product_id = " . escape($_GET['id']) . " ");
@@ -20,14 +20,14 @@ while($row = fetch_array($query)){
     $product_image = $row['product_image'];
 }
 ?>
-           
-<div class="col-md-9">
+<div style="margin-top: 70px">
+<div class="" style="margin: 0; padding: 0">
 
 <!--Row For Image and Short Description-->
 
 <div class="row">
 
-    <div class="col-md-7">
+    <div class="col-sm-7">
         <?php 
         if (!$product_image){
             $image_path = "http://placehold.it/320x150";
@@ -36,18 +36,17 @@ while($row = fetch_array($query)){
         }
          ?>
         
-       <img class="img-responsive" src="<?php echo $image_path;?>" alt="">
+       <img class="img-fluid" src="<?php echo $image_path;?>" alt="">
 
     </div>
 
-    <div class="col-md-5">
+    <div class="col-sm-5">
 
-        <div class="thumbnail">
+        <div class="card">
          
 
-    <div class="caption-full">
-        <h4><a href="#"><?php echo $product_title;?></a> </h4>
-        <hr>
+    <div class="caption-full" style="margin: 10px">
+        <h4><?php echo $product_title;?></h4>
         <h4 class="">&#36;<?php echo $product_price; ?></h4>
 
     <div class="ratings">
@@ -210,7 +209,7 @@ while($row = fetch_array($query)){
 
 </div>
 <!--col-md-9 ends here-->
-
+</div>  
 </div>
     <!-- /.container -->
 

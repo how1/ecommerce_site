@@ -4,30 +4,32 @@
 
 
     <!-- Page Content -->
-    <div class="container">
-
+    <div class="container" style="margin-top: 70px">
+    <a id="message" href="" style="text-decoration: none; color: white"><?php 
+          
+            display_message();?></a>
         <div class="row">
 
 <!--           Categories Here-->
             <?php include(TEMPLATE_FRONT . DS . "side_nav.php");?>
 
-            <div class="col-md-9">
+            <div class="col-sm-9">
 
                 <div class="row carousel-holder">
 
-                    <div class="col-md-12">
+                    <div class="col-sm-12">
 <!--                        Carosel Here-->
                    <?php include(TEMPLATE_FRONT . DS . "slider.php");?>
                     </div>
+                    <div class="row" style="margin: 15px 0 0 0;">
+                
+                   <?php get_products();?>
+
+                </div>
                 </div>
 <!--row starts here-->
 
-                <div class="row">
-
-
-                   <?php get_products();?>
-                    
-                </div>
+                
 <!--row ends here-->
             </div>
 
