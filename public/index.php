@@ -5,9 +5,7 @@
 
     <!-- Page Content -->
     <div class="container" style="margin-top: 70px">
-    <a id="message" href="" style="text-decoration: none; color: white"><?php 
-          
-            display_message();?></a>
+    <a id="message" href="#" style="text-decoration: none; color: white"></a>
         <div class="row">
 
 <!--           Categories Here-->

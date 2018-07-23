@@ -160,19 +160,19 @@ function login_user(){
         confirm($query);
         $row = fetch_array($query);
         if (mysqli_num_rows($query) == 0){
-            set_message("<h4 class='text-center bg-warning'>Your Username and/or Password is wrong</h4>");
-            // redirect("index.php");
+            set_message("<h4 id='message2' class='text-center bg-warning'>Your Username and/or Password is wrong</h4>");
+            redirect($_SERVER['REQUEST_URI']);
         } else {
-            if (isset($_POST['remember_me'])){
-                $expiration = time() + (60*60*24*7);
-                setcookie("remember_me",'remember',$expiration);
-                $expiration = time() + (60*60*24*7);
-                setcookie("auto-login",'login',$expiration);
-                $expiration = time() + (60*60*24*7);
-                setcookie("username",$username,$expiration);
-                $expiration = time() + (60*60*24*7);
-                setcookie("password",$password,$expiration);
-            }
+            // if (isset($_POST['remember_me'])){
+            //     $expiration = time() + (60*60*24*7);
+            //     setcookie("remember_me",'remember',$expiration);
+            //     $expiration = time() + (60*60*24*7);
+            //     setcookie("auto-login",'login',$expiration);
+            //     $expiration = time() + (60*60*24*7);
+            //     setcookie("username",$username,$expiration);
+            //     $expiration = time() + (60*60*24*7);
+            //     setcookie("password",$password,$expiration);
+            // }
             if ($row['user_role'] == 'Admin') {
                 $_SESSION['username'] = $username;
                 $_SESSION['user_role'] = $row['user_role'];
@@ -182,8 +182,8 @@ function login_user(){
             else {
                 $_SESSION['username'] = $username;
                 $_SESSION['user_role'] = $row['user_role'];
-                set_message("<h4 class='text-center bg-success'>Welcome $username</h4>");
-                // redirect($_SERVER['REQUEST_URI']);
+                set_message("<h4 id='message2' class='text-center bg-success'>Welcome $username</h4>");
+                redirect($_SERVER['REQUEST_URI']);
             }
         }
     }

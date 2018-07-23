@@ -44,50 +44,50 @@
               
                           
               } else {
-                if (isset($_COOKIE['remember_me'])){
-                  if ($_COOKIE['auto-login'] == 'login'){
-                    $_POST['username'] = $_COOKIE['username'];
-                    $_POST['password'] = $_COOKIE['password'];
-                  }
-                }
-              login_user();
+                // if (isset($_COOKIE['remember_me'])){
+                //   if ($_COOKIE['auto-login'] == 'login'){
+                //     $_POST['username'] = $_COOKIE['username'];
+                //     $_POST['password'] = $_COOKIE['password'];
+                //   }
+                // }
+             login_user();
 
              echo "
   <button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown'>
       Login
     </button>
 <div class='dropdown-menu dropdown-menu-right'>
-  <form class='px-4 py-3' action='{$_SERVER['REQUEST_URI']}' method='post' enctype='multipart/form-data'>
+  <form class='px-4 py-3' action='' method='post' enctype='multipart/form-data'>
 
    
     <div class='form-group'>
       <label for='exampleDropdownFormEmail1'>Username</label>";
 
-if (isset($_COOKIE['remember_me'])){
-        $username = $_COOKIE['username'];
-        $password = $_COOKIE['password'];
+// if (isset($_COOKIE['remember_me'])){
+//         $username = $_COOKIE['username'];
+//         $password = $_COOKIE['password'];
               
-    echo "<input type='text' required class='form-control' name='username' id='DropdownFormEmail' value='{$username}'>
-            </div>
-            <div class='form-group'>
-              <label for='exampleDropdownFormPassword1'>Password</label>
-              <input type='password' required class='form-control' name='password' id='DropdownFormPassword' value='{$password}'>
-              </div>
-          <div class='form-check'>
-          <input type='checkbox' checked class='form-check-input' name='remember_me' value='remember' id='remember_me'>";
-} else { 
-      unset($_COOKIE['username']);
-      unset($_COOKIE['password']);
-      unset($_COOKIE['auto-login']);
+    // echo "<input type='text' required class='form-control' name='username' id='DropdownFormEmail' value='{$username}'>
+    //         </div>
+    //         <div class='form-group'>
+    //           <label for='exampleDropdownFormPassword1'>Password</label>
+    //           <input type='password' required class='form-control' name='password' id='DropdownFormPassword' value='{$password}'>
+    //           </div>
+    //       <div class='form-check'>
+    //       <input type='checkbox' checked class='form-check-input' name='remember_me' value='remember' id='remember_me'>";
+// } else { 
+//       unset($_COOKIE['username']);
+//       unset($_COOKIE['password']);
+//       unset($_COOKIE['auto-login']);
       echo "<input type='text' required class='form-control' name='username' id='DropdownFormEmail' placeholder='Username'>
     </div>
     <div class='form-group'>
       <label for='exampleDropdownFormPassword1'>Password</label>
       <input type='password' required class='form-control' name='password' id='DropdownFormPassword' placeholder='Password'>
-       <div class='form-check'>
-          <input type='checkbox' class='form-check-input' name='remember_me' value='remember' id='remember_me'>";
+       <div class='form-check'>";
+       //   <input type='checkbox' class='form-check-input' name='remember_me' value='remember' id='remember_me'>";
 
-    }
+   // }
       $form = <<<DELIMITER
     
     </div>
