@@ -1,14 +1,21 @@
- <div class="container">
+ <div class="container" style="margin-top: 300px">
 
         <hr>
 
         <!-- Footer -->
         <footer>
             <div class="row">
-                <ul>
-                    <li><a href="contact.php">Contact</a></li>
+                <div class="col-sm-2">
+                    <ul class="list-group">
+                    <a style="text-decoration: none" href="contact.php"><h3 class='list-group-item-action'>Contact</h3></a>
+                    <a href='#' class='list-group-item-action'>Returns</a>
+                    <a href='#' class='list-group-item-action'>FAQ</a>
+                    <a href='#' class='list-group-item-action'>About</a>
                 </ul>
+            </div>
+                
                 <div class="col-lg-12">
+                    <hr>
                     <p>Copyright &copy; Your Website 2030</p>
                 </div>
             </div>

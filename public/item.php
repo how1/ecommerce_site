@@ -52,11 +52,11 @@ while($row = fetch_array($query)){
     <div class="ratings">
      
         <p>
-            <span class="glyphicon glyphicon-star"></span>
-            <span class="glyphicon glyphicon-star"></span>
-            <span class="glyphicon glyphicon-star"></span>
-            <span class="glyphicon glyphicon-star"></span>
-            <span class="glyphicon glyphicon-star-empty"></span>
+            <span class="fas fa-star"></span>
+            <span class="fas fa-star"></span>
+            <span class="fas fa-star"></span>
+            <span class="fas fa-star"></span>
+            <span class="fas fa-star-empty"></span>
             4.0 stars
         </p>
     </div>
@@ -91,8 +91,8 @@ while($row = fetch_array($query)){
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Description</a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Reviews</a></li>
+    <li role="presentation" class="nav-item"><a class="nav-link active" href="#home" aria-controls="home" role="tab" data-toggle="tab">Description</a></li>
+    <li role="presentation" class="nav-item"><a class="nav-link" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Reviews</a></li>
 
   </ul>
 
@@ -105,7 +105,7 @@ while($row = fetch_array($query)){
     <p><?php echo $product_description;?></p>
 
     </div>
-    <div role="tabpanel" class="tab-pane" id="profile">
+    <div role="tabpanel" class="tab-pane" id="profile" style="margin: 5%">
 
   <div class="col-md-6">
 
@@ -114,12 +114,12 @@ while($row = fetch_array($query)){
         <hr>
 
         <div class="row">
-            <div class="col-md-12">
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
+            <div class="col-sm-12">
+                <span class="fas fa-star"></span>
+                <span class="fas fa-star"></span>
+                <span class="fas fa-star"></span>
+                <span class="fas fa-star"></span>
+                <span class="fas fa-star-empty"></span>
                 Anonymous
                 <span class="pull-right">10 days ago</span>
                 <p>This product was great in terms of quality. I would definitely buy another!</p>
@@ -129,12 +129,12 @@ while($row = fetch_array($query)){
         <hr>
 
         <div class="row">
-            <div class="col-md-12">
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
+            <div class="col-sm-12">
+                <span class="fas fa-star"></span>
+                <span class="fas fa-star"></span>
+                <span class="fas fa-star"></span>
+                <span class="fas fa-star"></span>
+                <span class="fas fa-star-empty"></span>
                 Anonymous
                 <span class="pull-right">12 days ago</span>
                 <p>I've alredy ordered another one!</p>
@@ -144,12 +144,12 @@ while($row = fetch_array($query)){
         <hr>
 
         <div class="row">
-            <div class="col-md-12">
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star-empty"></span>
+            <div class="col-sm-12">
+                <span class="fas fa-star"></span>
+                <span class="fas fa-star"></span>
+                <span class="fas fa-star"></span>
+                <span class="fas fa-star"></span>
+                <span class="fas fa-star-empty"></span>
                 Anonymous
                 <span class="pull-right">15 days ago</span>
                 <p>I've seen some better than this, but not at this price. I definitely recommend this item.</p>
@@ -159,7 +159,7 @@ while($row = fetch_array($query)){
     </div>
 
 
-    <div class="col-md-6">
+    <div class="col-sm-6">
         <h3>Add A review</h3>
 
      <form action="" class="form-inline">
@@ -174,10 +174,10 @@ while($row = fetch_array($query)){
 
         <div>
             <h3>Your Rating</h3>
-            <span class="glyphicon glyphicon-star"></span>
-            <span class="glyphicon glyphicon-star"></span>
-            <span class="glyphicon glyphicon-star"></span>
-            <span class="glyphicon glyphicon-star"></span>
+            <span class="fas fa-star"></span>
+            <span class="fas fa-star"></span>
+            <span class="fas fa-star"></span>
+            <span class="fas fa-star"></span>
         </div>
 
             <br>

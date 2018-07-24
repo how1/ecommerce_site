@@ -11,14 +11,11 @@
             display_message(); ?></h4></a>
 
 <!-- /.row --> 
+  <h1>Cart</h1>
 
 <div class="row">
         
-      <h1>Checkout</h1>
-
-<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-  <input type="hidden" name="cmd" value="_cart">
-  <input type="hidden" name="business" value="seller@henrywowen.com">
+<div class="col-lg-8">
     <table class="table table-striped" style="margin: 10px">
         <thead>
           <tr>
@@ -31,18 +28,18 @@
         </thead>
         <tbody>
             <tr>
-                <?php cart();?>
+                <?php view_cart();?>
             </tr>
         </tbody>
     </table>
-<?php show_paypall();?>
 </form>
+</div>
 
 
 
 <!--  ***********CART TOTALS*************-->
             
-<div class="col-xs-4 pull-right ">
+<div class="col-sm-4">
 <h2>Cart Totals</h2>
 
 <table class="table table-bordered" style="margin:10px" cellspacing="0">
@@ -68,14 +65,14 @@
 
 </table>
 
+<a href="checkout.php" class="btn btn-primary float-right">Checkout</a>
 
 </div><!-- CART TOTALS-->
-
 
  </div><!--Main Content-->
 
 
-           <hr>
+           
 
 
 <?php include(TEMPLATE_FRONT . DS . "footer.php");?>

@@ -1,12 +1,12 @@
 <?php
 
-function set_message($msg){
-    if (!empty($msg)){
-        $_SESSION['message'] = $msg;
-    } else {
-        $msg = '';
-        
-    }
+function set_message($msg, $bg){
+    ?>
+    <script>
+        document.getElementById('message').innerHTML = "<h3 id='message2' class='text-center bg-<?php echo $bg?>'><?php echo $msg ?></h3>";
+    </script>
+
+    <?php
 }
 
 function display_message(){
@@ -151,17 +151,41 @@ DELIMITER;
         }
     }
 }
-
+require_once("phpass-0.5/Passwordhash.php");
 function login_user(){
-    if (isset($_POST['submit'])){
-        $username = escape($_POST['username']);
-        $password = escape($_POST['password']);
-        $query = query("SELECT * FROM users WHERE username = '{$username}' AND password = '{$password}' ");
+    if (isset($_POST['top_nav_submit'])){
+        $hasher = new PasswordHash(8, false);
+        $username = escape($_POST['top_nav_username']);
+        $password = escape($_POST['top_nav_password']);
+        if (strlen($password) > 72){ 
+            set_message("Password must be 72 characters or less", "danger");
+            // redirect($_SERVER['REQUEST_URI']);
+        }
+        $stored_hash = "*";
+
+        $query = query("SELECT * FROM users WHERE username = '{$username}'");
         confirm($query);
-        $row = fetch_array($query);
         if (mysqli_num_rows($query) == 0){
-            set_message("<h4 id='message2' class='text-center bg-warning'>Your Username and/or Password is wrong</h4>");
+            set_message("Your Username and/or Password is wrong", 'warning');
             redirect($_SERVER['REQUEST_URI']);
+        }
+
+        $row = fetch_array($query);
+        $stored_hash = $row['password'];
+        $check = $hasher->CheckPassword($password, $stored_hash);
+        if ($check){
+            if ($row['user_role'] == 'Admin') {
+                $_SESSION['username'] = $username;
+                $_SESSION['user_role'] = $row['user_role'];
+                set_message('Welcome to Admin', "success");
+                redirect('admin');
+            }
+            else {
+                $_SESSION['username'] = $username;
+                $_SESSION['user_role'] = $row['user_role'];
+                set_message("Welcome $username", "success");
+                redirect($_SERVER['REQUEST_URI']);
+            }
         } else {
             // if (isset($_POST['remember_me'])){
             //     $expiration = time() + (60*60*24*7);
@@ -173,18 +197,8 @@ function login_user(){
             //     $expiration = time() + (60*60*24*7);
             //     setcookie("password",$password,$expiration);
             // }
-            if ($row['user_role'] == 'Admin') {
-                $_SESSION['username'] = $username;
-                $_SESSION['user_role'] = $row['user_role'];
-                set_message('Welcome to Admin');
-                redirect('admin');
-            }
-            else {
-                $_SESSION['username'] = $username;
-                $_SESSION['user_role'] = $row['user_role'];
-                set_message("<h4 id='message2' class='text-center bg-success'>Welcome $username</h4>");
-                redirect($_SERVER['REQUEST_URI']);
-            }
+            set_message("Your Username and/or Password is wrong", "warning");
+            // redirect($_SERVER['REQUEST_URI']);
         }
     }
     
@@ -201,8 +215,8 @@ function send_message(){
         $headers = "From: {$from_name}";
         $result = mail($to, $subject, $message, $headers);
         if (!$result){
-            set_message("Error");
-        } else set_message("Sent");
+            set_message("Error", "danger");
+        } else set_message("Sent", "success");
         redirect("contact.php");
     }
 }
@@ -311,7 +325,7 @@ function add_product(){
             '{$p_brand}',
             '{$p_featured}')");
         confirm($query);
-        set_message("New product \"{$p_title}\" added");
+        set_message("New product \"{$p_title}\" added", "success");
         redirect("index.php?products");
     }
 
@@ -355,7 +369,7 @@ function edit_product($product_image){
             product_featured = '{$p_featured}' 
             WHERE product_id = {$_GET['id']}");
         confirm($query);
-        set_message("Product \"{$p_title}\" edited");
+        set_message("Product \"{$p_title}\" edited", "success");
         redirect("index.php?products");
     }
 
@@ -408,7 +422,7 @@ function add_category(){
         $cat_title = escape($_POST['cat_title']);
 
         $query = query("INSERT INTO categories (cat_title) VALUES ('{$cat_title}')");
-        set_message("Category created");
+        set_message("Category created", "success");
         redirect("index.php?categories");
     }
 }
@@ -449,7 +463,7 @@ function add_user(){
         $user_role = escape($_POST['user_role']);
         $query = query("INSERT INTO users (username, password, user_email, user_role) VALUES ('{$username}','{$password}','{$email}','{$user_role}')");
         confirm($query);
-        set_message("User \"{$username}\" added");
+        set_message("User \"{$username}\" added", "success");
         redirect("index.php?users");
     }
 }
@@ -467,7 +481,7 @@ function edit_user(){
             user_role = '{$user_role}' 
             WHERE user_id=" . $_GET['id']);
         confirm($query);
-        set_message("User \"{$username}\" changes made");
+        set_message("User \"{$username}\" changes made", "success");
         redirect("index.php?users");
     }
 }
@@ -535,5 +549,174 @@ DELIMITER;
     }
 
 }
+
+function update_account(){
+
+if (isset($_SESSION['username'])){
+    $the_username = $_SESSION['username'];
+    $query = "SELECT * FROM users WHERE username = '{$the_username}' ";
+    $select_user_query = query($query);
+    while ($row = fetch_array($select_user_query)){
+        $user_firstname = $row['user_firstname'];
+        $user_lastname = $row['user_lastname'];
+        $user_role = $row['user_role'];
+        $user_addr1 = $row['user_addr1'];
+        $user_addr2 = $row['user_addr2'];
+        $user_city = $row['user_city'];
+        $user_zipcode = $row['user_zipcode'];
+        $user_state = $row['user_state'];
+        $user_phone_number = $row['user_phone_number'];
+        $username = $row['username'];
+        $user_email = $row['user_email'];
+    }
+                            
+    if (isset($_POST['update_profile'])){
+       $user_firstname = $_POST['user_firstname'];
+        $user_lastname = $_POST['user_lastname'];
+        $user_addr1 = $_POST['user_addr1'];
+        $user_addr2 = $_POST['user_addr2'];
+        $user_city = $_POST['user_city'];
+        $user_zipcode = $_POST['user_zipcode'];
+        $user_state = $_POST['user_state'];
+        $user_phone_number = $_POST['user_phone_number'];
+        $username = $_POST['username'];
+        $user_email = $_POST['user_email'];
+
+        $query = "UPDATE users SET ";
+        $query .= "user_firstname = '{$user_firstname}', ";
+        $query .= "user_lastname = '{$user_lastname}', ";
+        $query .= "user_addr1 = '{$user_addr1}', ";
+        $query .= "user_addr2 = '{$user_addr2}', ";
+        $query .= "user_city = '{$user_city}', ";
+        $query .= "user_state = '{$user_state}', ";
+        $query .= "user_zipcode = '$user_zipcode', ";
+        $query .= "user_phone_number = '$user_phone_number', ";
+        $query .= "username = '{$username}', ";
+        $query .= "user_email = '{$user_email}' ";
+        $query .= "WHERE username = '{$the_username}' ";
+        $query = query($query);
+        
+        confirm($query);
+        set_message("Changes Saved", "success");
+    }
+
+    $account_form = <<<DELIMITER
+    <div class = "col-md-7">
+    <div class="form-group">
+        <label for="post_author">Firstname</label>
+        <input type="text" value="{$user_firstname}" class="form-control" name="user_firstname">
+    </div>
+       
+    <div class="form-group">
+        <label for="post_status">Lastname</label>
+        <input type="text" value="{$user_lastname}" class="form-control" name="user_lastname">
+    </div>
+       
+    <div class="form-group">
+        <label for="post_tags">Username</label>
+        <input type="text" value="{$username}" class="form-control" name="username">
+    </div>    
+       
+    <div class="form-group">
+        <label for="post_tags">Email</label>
+        <input type="email" value="{$user_email}" class="form-control" name="user_email">
+    </div>
+      
+    <div class="form-group">
+        <label for="post_tags">Street Address 1</label>
+        <input type="text" value="{$user_addr1}" class="form-control" name="user_addr1">
+    </div>
+    </div>
+    <div class="col-md-6">
+    <div class="form-group">
+        <label for="post_tags">Street Address 2</label>
+        <input type="text" value="{$user_addr2}" class="form-control" name="user_addr2">
+    </div> 
+
+    <div class="form-group">
+        <label for="post_tags">City</label>
+        <input type="text" value="{$user_city}" class="form-control" name="user_city">
+    </div>
+
+    <div class="form-group">
+        <div class="form-group">
+            <label for="exampleFormControlInput1">State</label>
+            <select class="form-control" required name="user_state">
+            <option value="{$user_state}" selected>{$user_state}</option>
+            <option value="AL">Alabama</option>
+            <option value="AK">Alaska</option>
+            <option value="AZ">Arizona</option>
+            <option value="AR">Arkansas</option>
+            <option value="CA">California</option>
+            <option value="CO">Colorado</option>
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="DC">District Of Columbia</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="HI">Hawaii</option>
+            <option value="ID">Idaho</option>
+            <option value="IL">Illinois</option>
+            <option value="IN">Indiana</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="MT">Montana</option>
+            <option value="NE">Nebraska</option>
+            <option value="NV">Nevada</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NM">New Mexico</option>
+            <option value="NY">New York</option>
+            <option value="NC">North Carolina</option>
+            <option value="ND">North Dakota</option>
+            <option value="OH">Ohio</option>
+            <option value="OK">Oklahoma</option>
+            <option value="OR">Oregon</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="SD">South Dakota</option>
+            <option value="TN">Tennessee</option>
+            <option value="TX">Texas</option>
+            <option value="UT">Utah</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WA">Washington</option>
+            <option value="WV">West Virginia</option>
+            <option value="WI">Wisconsin</option>
+            <option value="WY">Wyoming</option>
+            </select>   
+          </div>
+    </div>
+
+    <div class="form-group">
+        <label for="post_tags">ZIP Code</label>
+        <input type="number" value="{$user_zipcode}" class="form-control" name="user_zipcode">
+    </div>
+
+    <div class="form-group">
+        <label for="post_tags">Phone Number</label>
+        <input type="tel" value="{$user_phone_number}" class="form-control" name="user_phone_number">
+    
+    </div>
+    <div class="form-group">
+        <label for=""></label>
+        <input type="submit" class="btn btn-primary" name="update_profile" value="Update Profile">
+    </div>
+
+DELIMITER;
+    echo $account_form;
+    }
+}
+
 
 ?>

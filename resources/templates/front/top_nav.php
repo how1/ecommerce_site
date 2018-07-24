@@ -16,12 +16,6 @@
                         <a class="nav-link" href="shop.php">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="login.php">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin">Admin</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="view_cart.php">Cart</a>
                     </li>
                 </ul>
@@ -30,16 +24,20 @@
               <?php 
 
               if (isset($_SESSION['username'])){
-                 echo"
+                 echo "
 <div class='dropdown show'>
   <a class='btn btn-primary dropdown-toggle' href='#'' role='button' id='dropdownMenuLink' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
     {$_SESSION['username']}
   </a>
 
-  <div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>
-    <a class='dropdown-item' href='admin/logout.php'>Logout</a>
-    
-  </div>
+  <div class='dropdown-menu' aria-labelledby='dropdownMenuLink'>";
+            if ($_SESSION['user_role'] == "Admin"){
+    echo "<a class='dropdown-item' href='admin'>Go to Admin</a>";
+  } else {
+    echo "<a class='dropdown-item' href='account.php'>Account</a>";
+  }
+    echo "<a class='dropdown-item' href='admin/logout.php'>Logout</a>
+    </div>
 </div>";
               
                           
@@ -79,11 +77,11 @@
 //       unset($_COOKIE['username']);
 //       unset($_COOKIE['password']);
 //       unset($_COOKIE['auto-login']);
-      echo "<input type='text' required class='form-control' name='username' id='DropdownFormEmail' placeholder='Username'>
+      echo "<input type='text' required class='form-control' name='top_nav_username' id='DropdownFormEmail' placeholder='Username'>
     </div>
     <div class='form-group'>
       <label for='exampleDropdownFormPassword1'>Password</label>
-      <input type='password' required class='form-control' name='password' id='DropdownFormPassword' placeholder='Password'>
+      <input type='password' required class='form-control' name='top_nav_password' id='DropdownFormPassword' placeholder='Password'>
        <div class='form-check'>";
        //   <input type='checkbox' class='form-check-input' name='remember_me' value='remember' id='remember_me'>";
 
@@ -97,10 +95,10 @@
         Remember me
       </label>
     </div>
-    <button type="submit" name="submit" class="btn btn-primary">Sign in</button>
+    <button type="submit" name="top_nav_submit" class="btn btn-primary">Sign in</button>
   </form>
   <div class="dropdown-divider"></div>
-  <a class="dropdown-item" href="#">New around here? Sign up</a>
+  <a class="dropdown-item" href="registration.php">Sign up</a>
   <a class="dropdown-item" href="#">Forgot password?</a>
 </div>
 </div>
