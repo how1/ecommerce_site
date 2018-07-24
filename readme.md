@@ -4,9 +4,7 @@ Payments through Paypal
 
 To do:
 
-Password encryption
-
-Non-admin user accounts with information
+$2y encryption (currently $2a)
 
 Reviews
 
